@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service("TradeDataService")
 public class TradeDataServiceImpl implements TradeDataService {
@@ -29,20 +31,24 @@ public class TradeDataServiceImpl implements TradeDataService {
         String set_time = date.format(formatter)+" "+time.format(formatter1);
         int u_num = getUserID.size();
         int R_num = getRIC.size();
+        int hold =0;
         for (int i = 0 ; i < u_num ; i++){
             for (int j = 0 ; j < R_num ; j++) {
                 Random rand = new Random();
                 String user_id = getUserID.get(i);
                 String RIC = getRIC.get(j);
-                SharesHold result = tradeDataMapper.getHold(RIC, user_id);
-                if (result == null) {
-                    tradeDataMapper.setHold(RIC,user_id,0);
+                List<SharesHold> result = tradeDataMapper.getHold(RIC, user_id);
+                result = result.stream().sorted(Comparator.comparing(SharesHold::getUser_id).thenComparing(SharesHold::getRIC).thenComparing(SharesHold::getLastTime).reversed()).collect(Collectors.toList());
+                System.out.print(result);
+                if (result.isEmpty()) {
+                    hold =0 ;
+                }
+                else{
+                    hold = result.get(0).getCurrent_hold();
                 }
                 float price = tradeDataMapper.getShares(RIC).getSharesPrice();
                 int shares_num = tradeDataMapper.getShares(RIC).getSharesNum();
                 int limit = tradeDataMapper.getShares(RIC).getTradeLimit();
-                String current_hold = String.valueOf(tradeDataMapper.getHold(RIC,user_id).getCurrent_hold());
-                int hold = tradeDataMapper.getHold(RIC,user_id).getCurrent_hold();
                 if (hold == 0){
                     if (shares_num == 0)
                     {
@@ -57,8 +63,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                         size = rand.nextInt(shares_num) + 1;
                     }
                     String salesman_id = getSalesman.get(rand.nextInt(10));
-                    tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,1);
-                    tradeDataMapper.changeHold(RIC,user_id,hold + size);
+                    tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,1,hold + size);
                     tradeDataMapper.changeSharesNum(RIC,shares_num - size);
                 }
                 else {
@@ -67,8 +72,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                         int size = rand.nextInt(hold)+1;
                         size = -size;
                         String salesman_id = getSalesman.get(rand.nextInt(10));
-                        tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,0);
-                        tradeDataMapper.changeHold(RIC,user_id,hold + size);
+                        tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,0,hold + size);
                         tradeDataMapper.changeSharesNum(RIC,shares_num - size);
                     }
                     else{
@@ -77,13 +81,12 @@ public class TradeDataServiceImpl implements TradeDataService {
                             int size = rand.nextInt(hold)+1;
                             size = -size;
                             String salesman_id = getSalesman.get(rand.nextInt(10));
-                            tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,0);
-                            tradeDataMapper.changeHold(RIC,user_id,hold + size);
+                            tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,0,hold + size);
                             tradeDataMapper.changeSharesNum(RIC,shares_num - size);
                         }
                         else if(trade_flag == 1){
                             int size =0;
-                            int max_size = limit - Integer.parseInt(current_hold);
+                            int max_size = limit - hold;
                             if(shares_num >= max_size){
                                 size = rand.nextInt(max_size) + 1;
                             }
@@ -91,8 +94,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                                 size = rand.nextInt(shares_num) + 1;
                             }
                             String salesman_id = getSalesman.get(rand.nextInt(10));
-                            tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,1);
-                            tradeDataMapper.changeHold(RIC,user_id,hold + size);
+                            tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,price,1,hold+size);
                             tradeDataMapper.changeSharesNum(RIC,shares_num - size);
                         }
                     }

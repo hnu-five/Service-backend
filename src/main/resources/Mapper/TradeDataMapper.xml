@@ -3,20 +3,13 @@
 
 <mapper namespace="com.example.tie_five_citi.Mapper.TradeDataMapper">
     <select id="setData">
-        insert into citi_test.transaction_records(RIC, user_id, transaction_size, transaction_time, salesman_id,
-                                                  transaction_price, transaction_flag)
-        values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5},#{param6},#{param7});
+        insert into transaction_records(RIC, user_id, transaction_size, transaction_time, salesman_id,
+                                                  transaction_price, transaction_flag, shares_hold)
+        values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5},#{param6},#{param7}, #{param8});
     </select>
-    <insert id="setHold">
-        insert into citi_test.shares_hold(RIC, user_id, hold_size) values (#{param1}, #{param2}, #{param3})
-    </insert>
-    <update id="changeHold">
-        update citi_test.shares_hold set hold_size = #{param3}
-        where RIC = #{param1} and user_id = #{param2};
-    </update>
     <select id="getHold" parameterType="java.lang.String" resultType="com.example.tie_five_citi.Entity.SharesHold" >
-        SELECT distinct A.RIC as RIC,A.user_id as user_id,A.hold_size as current_hold
-        FROM shares_hold as A
+        SELECT distinct A.RIC as RIC,A.user_id as user_id,A.shares_hold as current_hold,A.transaction_time as lastTime
+        FROM transaction_records as A
         where A.RIC = #{param1} and A.user_id = #{param2};
     </select>
     <select id="getShares" resultType="com.example.tie_five_citi.Entity.Shares">
@@ -26,7 +19,7 @@
         where A.RIC = #{RIC};
     </select>
     <update id="changeSharesNum">
-        update citi_test.shares set shares_num = #{param2}
+        update shares set shares_num = #{param2}
         where RIC = #{param1};
     </update>
     <select id="getRIC" resultType="String">

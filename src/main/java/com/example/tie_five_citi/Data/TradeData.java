@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 @Configuration
 //1.主要用于标记配置类，兼备Component的效果。
 @EnableScheduling
-public class tradeData {
+public class TradeData {
     @Autowired
     TradeDataService tradeDataService;
 

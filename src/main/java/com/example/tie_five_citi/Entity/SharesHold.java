@@ -1,9 +1,12 @@
 package com.example.tie_five_citi.Entity;
 
+import java.sql.Time;
+
 public class SharesHold {
     private String RIC;
     private String user_id;
     private int current_hold;
+    private Time lastTime;
 
     public void setRIC(String RIC) {
         this.RIC = RIC;
@@ -23,6 +26,14 @@ public class SharesHold {
 
     public int getCurrent_hold() {
         return current_hold;
+    }
+
+    public Time getLastTime() {
+        return lastTime;
+    }
+
+    public void setLastTime(Time lastTime) {
+        this.lastTime = lastTime;
     }
 
     public String getRIC() {

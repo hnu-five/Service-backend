@@ -8,8 +8,8 @@ import java.util.List;
 
 @Mapper
 public interface TradeDataMapper {
-    void setData(String RIC, String user_id, int size,String time,String salesman,float price,int flag);
-    SharesHold getHold(String RIC, String user_id);
+    void setData(String RIC, String user_id, int size,String time,String salesman,float price,int flag,int hold);
+    List<SharesHold> getHold(String RIC, String user_id);
     void changeHold(String RIC,String user_id,int temp);
     void setHold(String RIC,String user_id,int temp);
     Shares getShares(String RIC);
