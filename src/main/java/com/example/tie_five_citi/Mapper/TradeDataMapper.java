@@ -8,13 +8,13 @@ import java.util.List;
 
 @Mapper
 public interface TradeDataMapper {
-    void setData(String RIC, String user_id, int size,String time,String salesman,float price,int flag,int hold);
+    void setData(String RIC, String user_id, int size,String time,String salesman,String currency,float price,String flag,int hold,String sector,int mode);
     List<SharesHold> getHold(String RIC, String user_id);
-    void changeHold(String RIC,String user_id,int temp);
-    void setHold(String RIC,String user_id,int temp);
     Shares getShares(String RIC);
     void changeSharesNum(String RIC,int num);
     List<String> getRIC();
     List<String> getUser();
     List<String> getSales();
+    List<String> getCurrency();
+    float getRate(String currencyID);
 }
