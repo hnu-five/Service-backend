@@ -4,7 +4,7 @@
 <mapper namespace="com.example.tie_five_citi.Mapper.TradeDataMapper">
     <select id="setData">
         insert into transaction_records(RIC, user_id, transaction_size, transaction_time, salesman_id, currency_id,
-                                                  transaction_price, transaction_flag, shares_hold, issuer_sector, transaction_mode)
+                                        transaction_price, transaction_flag, shares_hold, issuer_sector, transaction_mode)
         values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5},#{param6},#{param7}, #{param8}, #{param9}, #{param10}, #{param11});
     </select>
     <select id="getHold" parameterType="java.lang.String" resultType="com.example.tie_five_citi.Entity.SharesHold" >

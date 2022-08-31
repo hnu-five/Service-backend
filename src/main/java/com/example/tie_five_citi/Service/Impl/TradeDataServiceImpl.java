@@ -67,7 +67,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                     {
                         size = rand.nextInt(shares_num) + 1;
                     }
-                    String salesman_id = getSalesman.get(rand.nextInt(10));
+                    String salesman_id = getSalesman.get(rand.nextInt(getSalesman.size()));
                     tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,currency,price,"buy",hold + size,sector,mode);
                     tradeDataMapper.changeSharesNum(RIC,shares_num - size);
                 }
@@ -75,7 +75,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                     if (shares_num == 0)
                     {
                         int size = rand.nextInt(hold)+1;
-                        String salesman_id = getSalesman.get(rand.nextInt(10));
+                        String salesman_id = getSalesman.get(rand.nextInt(getSalesman.size()));
                         tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,currency,price,"sell",hold - size,sector,mode);
                         tradeDataMapper.changeSharesNum(RIC,shares_num + size);
                     }
@@ -83,7 +83,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                         int trade_flag = rand.nextInt(2);
                         if(trade_flag == 0){
                             int size = rand.nextInt(hold)+1;
-                            String salesman_id = getSalesman.get(rand.nextInt(10));
+                            String salesman_id = getSalesman.get(rand.nextInt(getSalesman.size()));
                             tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,currency,price,"sell",hold - size,sector,mode);
                             tradeDataMapper.changeSharesNum(RIC,shares_num + size);
                         }
@@ -96,7 +96,7 @@ public class TradeDataServiceImpl implements TradeDataService {
                             else if(shares_num < max_size){
                                 size = rand.nextInt(shares_num) + 1;
                             }
-                            String salesman_id = getSalesman.get(rand.nextInt(10));
+                            String salesman_id = getSalesman.get(rand.nextInt(getSalesman.size()));
                             tradeDataMapper.setData(RIC,user_id,size,set_time,salesman_id,currency,price,"buy",hold + size,sector,mode);
                             tradeDataMapper.changeSharesNum(RIC,shares_num - size);
                         }
