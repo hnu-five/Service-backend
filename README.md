@@ -3,7 +3,7 @@ Citi training 2022 summer
 
 this repository is build to save the backend code
 
-** Please use the latest branch with micro service implemention [here](https://github.com/hnu-five/Service-backend/tree/microService).**
+**Please use the latest branch with micro service implemention [here](https://github.com/hnu-five/Service-backend/tree/microService).**
 
 ## First step
 
