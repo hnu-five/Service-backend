@@ -25,7 +25,7 @@ public class TradeDataServiceImpl implements TradeDataService {
         List<String> getRIC = tradeDataMapper.getRIC();
         List<String> getSalesman = tradeDataMapper.getSales();
         List<String> getCurrency = tradeDataMapper.getCurrency();
-        String[] sectors = {"citi","HNUBank","CSBank","TFBank"};
+        String[] sectors = {"NYSE","NASDAQ","LSE","FESE","HKEx","SHSE","ASX","FWB"};
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now(); // get the current time
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -37,9 +37,14 @@ public class TradeDataServiceImpl implements TradeDataService {
         for (int i = 0 ; i < u_num ; i++){
             for (int j = 0 ; j < R_num ; j++) {
                 Random rand = new Random();
+                int whetherTrade = rand.nextInt(3);
+                if(whetherTrade != 0)
+                {
+                    continue;
+                }
                 String user_id = getUserID.get(i);
                 String RIC = getRIC.get(j);
-                String sector = sectors[rand.nextInt(4)];
+                String sector = sectors[rand.nextInt(sectors.length)];
                 String currency = getCurrency.get(rand.nextInt(getCurrency.size() + 1));
                 float rate = tradeDataMapper.getRate(currency);
                 int mode = rand.nextInt(2);
