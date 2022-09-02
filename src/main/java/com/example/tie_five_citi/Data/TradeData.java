@@ -14,7 +14,7 @@ public class TradeData {
     TradeDataService tradeDataService;
 
     //3.添加定时任务
-    @Scheduled(fixedRate = 1000 * 30)
+    @Scheduled(fixedRate = 1000 * 3000)
     public void configureTasks() {
         tradeDataService.setTradeData();
     }

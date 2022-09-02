@@ -16,5 +16,7 @@ public interface TradeDataMapper {
     List<String> getUser();
     List<String> getSales();
     List<String> getCurrency();
+    String getSharesCurrency(String RIC);
     float getRate(String currencyID);
+    void setHistory(String RIC,float closingPrice,int transactionIn,int transactionOut,String date);
 }

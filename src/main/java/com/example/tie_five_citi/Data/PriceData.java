@@ -15,7 +15,7 @@ public class PriceData {
     PriceDataService priceDataService;
 
     //3.添加定时任务
-    @Scheduled(fixedRate = 1000 * 60)
+    @Scheduled(fixedRate = 1000 * 60 * 60 * 24)
     public void configureTasks() {
         priceDataService.setPriceData();
     }

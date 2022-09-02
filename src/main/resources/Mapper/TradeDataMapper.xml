@@ -2,15 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
 <mapper namespace="com.example.tie_five_citi.Mapper.TradeDataMapper">
-    <select id="setData">
+    <insert id="setData">
         insert into transaction_records(RIC, user_id, transaction_size, transaction_time, salesman_id, currency_id,
                                         transaction_price, transaction_flag, shares_hold, issuer_sector, transaction_mode)
         values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5},#{param6},#{param7}, #{param8}, #{param9}, #{param10}, #{param11});
-    </select>
+    </insert>
+    <insert id="setHistory">
+        insert into shares_history(RIC, closing_price, transaction_in, transaction_out, record_date)
+        values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5});
+    </insert>
     <select id="getHold" parameterType="java.lang.String" resultType="com.example.tie_five_citi.Entity.SharesHold" >
         SELECT distinct A.RIC as RIC,A.user_id as user_id,A.shares_hold as current_hold,A.transaction_time as lastTime
         FROM transaction_records as A
         where A.RIC = #{param1} and A.user_id = #{param2};
+    </select>
+    <select id="getSharesCurrency" resultType="String" >
+        SELECT distinct A.currency_id
+        FROM shares as A
+        where A.RIC = #{param1};
     </select>
     <select id="getShares" resultType="com.example.tie_five_citi.Entity.Shares">
         SELECT distinct A.RIC as RIC,A.shares_name as sharesName,A.class_id as classId,A.shares_price AS sharesPrice,
