@@ -105,6 +105,8 @@ public class TransactionRecordsServiceImpl extends ServiceImpl<TransactionRecord
             return 1;
         } else if (transactionRequest.getSize() == null || transactionRequest.getSize() < 1) {
             return 2;
+        } else if (transactionRequest.getClientSide() == null || transactionRequest.getClientSide().isBlank()) {
+            return 3;
         }
         // set default user
         User targetUser = userMapper.selectFirstUser();
@@ -113,7 +115,7 @@ public class TransactionRecordsServiceImpl extends ServiceImpl<TransactionRecord
         sharesHold = sharesHold == null ? 0 : sharesHold;
         Long sizeToTrade = transactionRequest.getSize().longValue() * (transactionRequest.getClientSide().equals("buy") ? 1 : -1);
         if (sharesHold + sizeToTrade > targetShare.getTradeLimit() || sharesHold + sizeToTrade < 0 || targetShare.getSharesNum() - sizeToTrade < 1) {
-            return 3;
+            return 4;
         }
         // set default salesman
         Salesman targetSalesman = salesmanMapper.selectFirstSalesman();
@@ -127,7 +129,7 @@ public class TransactionRecordsServiceImpl extends ServiceImpl<TransactionRecord
                 targetSalesman.getSalesmanId(),
                 targetShare.getCurrencyId(),
                 targetShare.getSharesPrice(),
-                transactionRequest.getClientSide(),
+                transactionRequest.getClientSide().equals("buy") ? "buy" : "sell",
                 sizeToTrade + sharesHold,
                 "DefaultSector",
                 0
