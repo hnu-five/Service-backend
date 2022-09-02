@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.tie_five_citi.Mapper.PriceDataMapper">
+    <update id="changePrice">
+        update shares
+        set shares_price = #{param2}
+        where RIC = #{param1}
+    </update>
+    <select id="getPrice" resultType="float">
+        SELECT distinct A.shares_price AS sharesPrice
+        FROM shares as A
+        where A.RIC = #{RIC}
+    </select>
+    <select id="getRIC" resultType="String">
+        SELECT distinct RIC
+        FROM shares
+    </select>
+</mapper>

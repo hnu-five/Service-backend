@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.tie_five_citi.Mapper.TradeDataMapper">
+    <select id="setData">
+        insert into transaction_records(RIC, user_id, transaction_size, transaction_time, salesman_id, currency_id,
+                                        transaction_price, transaction_flag, shares_hold, issuer_sector, transaction_mode)
+        values (#{param1}, #{param2}, #{param3}, #{param4}, #{param5},#{param6},#{param7}, #{param8}, #{param9}, #{param10}, #{param11});
+    </select>
+    <select id="getHold" parameterType="java.lang.String" resultType="com.example.tie_five_citi.Entity.SharesHold" >
+        SELECT distinct A.RIC as RIC,A.user_id as user_id,A.shares_hold as current_hold,A.transaction_time as lastTime
+        FROM transaction_records as A
+        where A.RIC = #{param1} and A.user_id = #{param2};
+    </select>
+    <select id="getShares" resultType="com.example.tie_five_citi.Entity.Shares">
+        SELECT distinct A.RIC as RIC,A.shares_name as sharesName,A.class_id as classId,A.shares_price AS sharesPrice,
+                        A.currency_id AS currencyId,A.shares_num AS sharesNum,A.trade_limit AS tradeLimit,A.shares_flag as sharesFlag
+        FROM shares as A
+        where A.RIC = #{RIC};
+    </select>
+    <update id="changeSharesNum">
+        update shares set shares_num = #{param2}
+        where RIC = #{param1};
+    </update>
+    <select id="getRIC" resultType="String">
+        SELECT distinct RIC
+        FROM shares
+    </select>
+    <select id="getUser" resultType="String">
+        SELECT distinct user_id
+        FROM user
+    </select>
+    <select id="getSales" resultType="String">
+        SELECT distinct salesman_id
+        FROM salesman
+    </select>
+    <select id="getCurrency" resultType="String">
+        SELECT distinct currency_id
+        FROM exchange_rate
+    </select>
+    <select id="getRate" resultType="float">
+        SELECT distinct currency_rate
+        FROM exchange_rate
+        where currency_id = #{param1}
+    </select>
+</mapper>

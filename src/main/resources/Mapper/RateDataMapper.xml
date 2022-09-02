@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.example.tie_five_citi.Mapper.RateDataMapper">
+    <update id="changeRate">
+        update exchange_rate
+        set exchange_rate.currency_rate = #{param2}
+        where exchange_rate.currency_id = #{param1}
+    </update>
+    <select id="getRate" resultType="float">
+        SELECT distinct A.currency_rate
+        FROM exchange_rate as A
+        where A.currency_id= #{param1}
+    </select>
+    <select id="getCurrency" resultType="String">
+        SELECT distinct currency_id
+        FROM exchange_rate
+    </select>
+</mapper>
